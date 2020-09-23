@@ -1,44 +1,51 @@
 body {
-    padding: 0;
-    margin: 0;
-    font-family: Georgia, "Times New Roman", Times, serif;
-    font-size: 18px;
-    line-height: 150%;
-    color: #333;
-  }
+	padding: 0;
+	margin: 0;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 18px;
+	line-height: 150%;
+	color: #333;
+}
 
-.container{
-    padding:50px;
-    text-align:center;
+.container {
+	padding: 50px;
+	text-align: center;
+}
 
-}  
+button {
+	background-color: rgb(197, 25, 197);
+	border: none;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	font-size: 16px;
+	margin: auto;
+	margin-bottom: 5px;
+	opacity: 1;
+	transition: 0.3s;
+	border: 2px solid purple;
+	display: block;
+}
 
-.btn-group button {
-    background-color: purple; /* Green background */
-    border: 1px solid purple; /* Green border */
-    color: white; /* White text */
-    cursor: pointer; /* Pointer/hand icon *//* Set a width if needed *//* Make the buttons appear below each other */
-    margin-bottom: 5px;
-    margin-left:auto;
-    margin-right:auto;
-    display:block;
-  }
-  
-  .hide {
-    display:none !important;
-  }
+button:hover {
+	opacity: 0.6
+}
 
-  .countdown {
-    position:absolute;
-    top:0;
-    right:0;
-  }
-  
-.results-border { 
-  border-top: 1px solid #000;
-  width: 100%;
-  margin: auto;
-  margin-top: 5%;
-  padding-top: 7px;
-  margin-bottom: 5%;
+.hide {
+	display: none!important;
+}
+
+.countdown {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.results-border {
+	border-top: 1px solid #000;
+	width: 100%;
+	margin: auto;
+	margin-top: 5%;
+	padding-top: 7px;
+	margin-bottom: 5%;
 }

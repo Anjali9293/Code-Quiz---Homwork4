@@ -75,6 +75,7 @@ var elements = {
 var timer;
 var timerCount = 60;
 var questionIndex = 0;
+var scoreCount = 0;
 
 function initiateQuiz() {
   timer = setInterval(startTimer, 1000);
@@ -127,7 +128,7 @@ function hideResults() {
 function checkAnswer(event) {
   if (event.target.id == myQuestions[questionIndex].correctAnswer) {      
     myQuestions[questionIndex].correct = true;
-    displayResults("Correct!")    
+    displayResults("Correct!")  
   } else displayResults("wrong!"); 
 
   nextQuestion();
@@ -140,4 +141,6 @@ function nextQuestion() {
 
 elements.start.addEventListener("click", initiateQuiz);
 elements.options.all.addEventListener("click", checkAnswer);
+
+
 
