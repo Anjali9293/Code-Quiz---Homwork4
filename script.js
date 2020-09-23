@@ -6,6 +6,7 @@ var questionContainer = document.getElementById('question-container');
 var answerButtons = document.getElementById('answer-buttons');
 var resultDisplay = document.querySelector("#result");
 var linedisplay =document.querySelector("#line");
+var TimerCount =document.querySelector("#countDown");
 var questionIndex = 0;
 var myQuestions = [
     {
@@ -99,13 +100,13 @@ var myQuestions = [
         console.log(questionIndex,myQuestions[questionIndex], myQuestions);
      if (event.target.id == myQuestions[questionIndex].correctAnswer )
      {
-         result.classList.remove('hide');
+         resultDisplay.classList.remove('hide');
          linedisplay.classList.remove('hide');
          resultDisplay.textContent = "Correct!";
          myQuestions[questionIndex].correct = true;
      }
      else{
-         result.classList.remove('hide');
+         resultDisplay.classList.remove('hide');
          linedisplay.classList.remove('hide');
          resultDisplay.textContent = "wrong!";
      }
@@ -114,20 +115,23 @@ var myQuestions = [
         displayQuestions();
     });
 
+    startButton.addEventListener("click",initiateTimer);
+    var timeIntervalUp = 0;
+    var secondsDown = 60;
+    function initiateTimer(){
+    timeIntervalUp = setInterval(startTimer, 1000);
+    }
+    function startTimer(){
+      TimerCount.classList.remove('hide');
+      console.log("working???");
+      TimerCount.textContent = "Time: " + secondsDown;
+      secondsDown--;
+      if (secondsDown == 0) {
+        clearInterval(timeIntervalUp);
+        endTimer();
 
-    // // Loop over every question object
-    // for (var i = 0; i < myQuestions.length; i++) {
-    //   // Display current question to user and ask OK/Cancel
-    //   var answer = (questions[questionIndex].q);
-
-    //   // Compare answers
-    //   if ((answer === true && questions[i].a === "t") ||
-    //     (answer === false && questions[i].a === "f")) {
-    //     // Increase score
-    //     score++;
-    //     alert("Correct!");
-    //   }
-    //   else {
-    //     alert("Wrong!");
-    //   }
-    // }
+    }
+  }
+  function endTimer() {   
+  TimerCount.textContent = "Time ran out";
+   }

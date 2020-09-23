@@ -28,4 +28,9 @@ body {
     display:none !important;
   }
 
+  .countdown {
+    position:absolute;
+    top:0;
+    right:0;
+  }
   
