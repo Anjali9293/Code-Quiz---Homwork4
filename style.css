@@ -41,11 +41,15 @@ button:hover {
 	right: 0;
 }
 
-.results-border {
+.messages-border {
 	border-top: 1px solid #000;
 	width: 100%;
 	margin: auto;
 	margin-top: 5%;
 	padding-top: 7px;
 	margin-bottom: 5%;
+}
+
+#submit {
+ margin-top: 10px;
 }

@@ -8,23 +8,36 @@
     </head>
 <body>
 <div class="container">
+    <div id="WelcomePage">
         <div id= "Welcome">Welcome to the coding quiz challange</div>
         <div id="description">Following quiz provides Multiple Choice Questions (MCQs) related to Javascript Framework. You will have to read all the given answers and click over the correct answer.Click Start button to start the quiz</div>
-        <div id="question-container" class="hide">Questions</div>
-        <div id="countDown" class="countdown hide" ></div>
-        <div id="answer-buttons" class="btn-group hide">
+        <div class="controls">
+            <button id="start" style ="background-color: purple; color:white;">Start Quiz</button>
+        </div>
+    </div>
+    <div id="QuestionPage" class="hide">
+        <div id="question-container">Questions</div>
+        <div id="countDown" class="countdown" ></div>
+        <div id="answer-buttons" class="btn-group">
             <button id="a">Option1</button>
             <button id="b">Option2</button>
             <button id="c">Option2</button>
             <button id="d">Option4</button>
         </div>
-        <div id="result" class="results-border hide"></div>
-        <div class="controls">
-            <button id="start" style ="background-color: purple; color:white;">Start Quiz</button>
-            <!-- <button id="Next">Next</button>
-            <button id="Submit">Submit</button> -->
-        </div>
-    <div id="results"></div>
+    </div>
+    <div id="ResultsPage" class="hide">
+     <p>All done!</p>
+     <p>Final score:<span id="score"></span></p>
+     <p>Enter Initials:<input type="text" id="initials"></p>
+     <button id="submitScore">Submit</button>
+    </div>
+    <div id="HighscorePage" class="hide">
+        <ul id="HighscoreList">
+
+        </ul>
+    </div>
+    <div id="HighscoreViewPage" class="hide"></div>
+    <div id="message" class="messages-border hide"></div>
 </div>
 <script src ="script.js"></script>
 </body>
