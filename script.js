@@ -1,3 +1,4 @@
+//object displaying questions,options and correct answer
 var myQuestions = [
   {
       question: "1.How can you get the type of arguments passed to a function?",
@@ -56,13 +57,13 @@ var myQuestions = [
     }
 ];
 
+//object to link elements in the document 
 var elements = {
   page: {
     Welcome: document.querySelector("#WelcomePage"),
     Question: document.querySelector("#QuestionPage"),
     Results: document.querySelector("#ResultsPage"),
     Highscore: document.querySelector("#HighscorePage"),
-    ViewHighscore: document.querySelector("#HighscoreViewPage")
   },
   question: document.querySelector("#question-container"),
   description: document.querySelector("#description"),
@@ -79,21 +80,25 @@ var elements = {
   Finalscore: document.querySelector("#score"), 
   UserInitials: document.querySelector("#initials"),
   SubmitScore: document.querySelector("#submitScore"),
-  HighscoreList: document.querySelector("#HighscoreList")
+  HighscoreList: document.querySelector("#HighscoreList"),
+  BackButton:document.querySelector("#go-back"),
+  ClearHighscore:document.querySelector("#clear-highscore")
 };
 
 var timer;
 var timerCount = 60;
 var questionIndex = 0;
 var scoreCount = 0;
-var highscores = JSON.parse(localStorage.highscores) || [];
+var resultsTimeout = null;
+var highscores = JSON.parse(localStorage.highscores|| "[]") ;
 
+//function to initaite the quiz
 function initiateQuiz() {
   timer = setInterval(startTimer, 1000);
   startTimer();
   displayQuestion();
 }
-
+//function to run the timer
 function startTimer() {  
   timerCount--;
   if (timerCount == 0) {
@@ -104,16 +109,16 @@ function startTimer() {
     elements.timer.textContent = "Time: " + timerCount;
   }
 }
-
+//function to end the timer
 function endTimer() {
   elements.timer.textContent = "Time ran out";
 }
-
+//function to hide welcome page and display questions page
 function prepareQuiz() {
   elements.page.Welcome.classList.add("hide");
   elements.page.Question.classList.remove("hide");
 }
-
+//function to display question and options
 function displayQuestion() {
   elements.question.textContent = myQuestions[questionIndex].question;
   elements.options.a.textContent = myQuestions[questionIndex].answers.a;
@@ -122,32 +127,34 @@ function displayQuestion() {
   elements.options.d.textContent = myQuestions[questionIndex].answers.d;
   prepareQuiz();
 }
-
+//function to display the message if the user selected answer is correct or wrong
 function displayMessage(result) {
   elements.message.textContent = result;
   elements.message.classList.remove("hide");
-  setTimeout(hideMessage, 1000);
+  if(resultsTimeout) {
+    clearTimeout(resultsTimeout);
+  }
+  resultsTimeout = setTimeout(hideMessage, 1000);
 }
-
+//function to hide the correct/incorrect message
 function hideMessage() {
   elements.message.classList.add("hide");  
 }
-
+//function to verify whether the user selected answer is correct
 function checkAnswer(event) {
   if (event.target.id == myQuestions[questionIndex].correctAnswer) {      
     myQuestions[questionIndex].correct = true;
     displayMessage("Correct!")  
   } else displayMessage("wrong!"); 
-
   nextQuestion();
 }
-
+//function to display next question
 function nextQuestion() {
   questionIndex++;
   if(myQuestions[questionIndex]) displayQuestion();
   else displayResults(); 
 }
-
+//function to display the user score in %
 function displayResults() {
   elements.page.Results.classList.remove("hide");
   elements.page.Question.classList.add("hide");
@@ -159,7 +166,7 @@ function displayResults() {
   elements.Finalscore.textContent = percentage+"%";
   
 }
-
+//function to submit the score and store the result in local storage
 function scoreSubmit(){
   highscores.push({
     initials: elements.UserInitials.value,
@@ -174,10 +181,14 @@ function scoreSubmit(){
   elements.UserInitials.value = "";
   displayHighscore();
 }
-
+//function to display the list of all the highscore stored in local storage
 function displayHighscore() {
+  elements.HighscoreList.innerHTML = "";
   elements.page.Results.classList.add("hide");
-  elements.page.Highscore.classList.remove("hide");  
+  elements.page.Highscore.classList.remove("hide");
+  elements.BackButton.classList.remove("hide");
+  elements.ClearHighscore.classList.remove("hide");
+  elements.message.classList.add("hide");  
 
   highscores.forEach(function(score, i) {
     var highscoreStr = (i+1) + ". " + score.initials + " - " + score.score;
@@ -188,8 +199,22 @@ function displayHighscore() {
   });
 
 }
+//function to clear list of high scores displayed on the page
+function highScoreClear(){
+  highscores = [];
+  localStorage.highscores = JSON.stringify(highscores);
+  displayHighscore();
+}
+//function to return back to the quiz start page
+function backToHome(){
+  questionIndex = 0;
+  elements.page.Highscore.classList.add("hide");
+  elements.page.Welcome.classList.remove("hide"); 
+}
 
 elements.start.addEventListener("click", initiateQuiz);
 elements.options.all.addEventListener("click", checkAnswer);
 elements.SubmitScore.addEventListener("click",scoreSubmit);
+elements.ClearHighscore.addEventListener("click",highScoreClear)
+elements.BackButton.addEventListener("click",backToHome);
 
