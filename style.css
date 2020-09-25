@@ -1,71 +1,89 @@
+/* styling jumbotron with background color,position,height,width and text alignment  */
 
-body{
-	min-height:100%;
-}
-
-.jumbotron{
-	position:relative;
-	top:50px;
+.jumbotron {
+	position: relative;
+	top: 50px;
 	width: 800px;
-	margin:auto;
-	text-align:center;
-	min-height:100%;
+	margin: auto;
+	text-align: center;
+	min-height: 100%;
 	background-color: whitesmoke;
-	
 }
 
-p{
-	padding-top:10px;
-	padding-bottom:10px;
 
+/*styling p tags with padding top and bottom*/
+
+p {
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
+
+
+/*class hide to display nothing*/
 
 .hide {
 	display: none!important;
 }
 
+
+/* setting the questions to appear bold*/
+
 #question-container {
 	padding-bottom: 20px;
 	font-weight: bold;
-
-
 }
 
-.btn{
-	padding-left:0px;
+
+/*setting attributes to buttons*/
+
+.btn {
+	padding-left: 0px;
 	margin-bottom: 10px!important;
-	text-align:left!important;
+	text-align: left!important;
 }
+
+
+/*setting position of view highscore to absolute*/
 
 .highScore {
-
 	position: absolute;
 	top: 0;
 	left: 5px;
 }
 
-ul {
-	background:gray;
-	padding: 20px;
-	list-style-type:none;
-	color:white;
-  }
 
-li{
-	background:lightslategray;
-	margin:5px;
-  }
+/*setting attributes to ul tag*/
+
+ul {
+	background: gray;
+	padding: 20px;
+	list-style-type: none;
+	color: white;
+}
+
+li {
+	background: lightslategray;
+	margin: 5px;
+}
+
+
+/*setting position of the countdown to absolute*/
 
 .countdown {
-
 	position: absolute;
 	top: 0;
 	right: 5px;
 }
 
+
+/*giving margin to submit button*/
+
 #submit {
- margin-top: 10px;
+	margin-top: 10px;
 }
+
+
+/*setting attributes to message border*/
 
 .messages-border {
 	border-top: 1px solid #000;
