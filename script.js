@@ -1,3 +1,6 @@
+const TIMER_START = 60; // constant for quiz allowed time
+const WRONG_ANSWER_COUNT =12; // constant to remove from time when wrong answer is selected
+
 //object displaying questions,options and correct answer
 var myQuestions = [
   {
@@ -74,6 +77,7 @@ var elements = {
     c: document.querySelector("#c"),
     d: document.querySelector("#d")
   },
+  ViewHighScore:document.querySelector("#view-highScore"),
   message: document.querySelector("#message"),
   start: document.querySelector("#start"),
   timer: document.querySelector("#countDown"),
@@ -85,12 +89,11 @@ var elements = {
   ClearHighscore:document.querySelector("#clear-highscore")
 };
 
-var timer;
-var timerCount = 60;
-var questionIndex = 0;
-var scoreCount = 0;
-var resultsTimeout = null;
-var highscores = JSON.parse(localStorage.highscores|| "[]") ;
+var timer;  // variable to hold timer once started
+var timerCount = TIMER_START; // global timer count 
+var questionIndex = 0; // current question index
+var resultsTimeout = null; // holds timeout for messages so to not run multiple times if already running
+var highscores = JSON.parse(localStorage.highscores|| "[]") ;// gets highscores from localstorage or sets default if doesnt exist
 
 //function to initaite the quiz
 function initiateQuiz() {
@@ -98,10 +101,11 @@ function initiateQuiz() {
   startTimer();
   displayQuestion();
 }
+
 //function to run the timer
 function startTimer() {  
   timerCount--;
-  if (timerCount == 0) {
+  if (timerCount <= 0) {
       clearInterval(timer);
       endTimer();
   } else {    
@@ -109,24 +113,29 @@ function startTimer() {
     elements.timer.textContent = "Time: " + timerCount;
   }
 }
+
 //function to end the timer
 function endTimer() {
   elements.timer.textContent = "Time ran out";
+  displayResults();
 }
+
 //function to hide welcome page and display questions page
 function prepareQuiz() {
   elements.page.Welcome.classList.add("hide");
   elements.page.Question.classList.remove("hide");
 }
+
 //function to display question and options
 function displayQuestion() {
   elements.question.textContent = myQuestions[questionIndex].question;
-  elements.options.a.textContent = myQuestions[questionIndex].answers.a;
-  elements.options.b.textContent = myQuestions[questionIndex].answers.b;
-  elements.options.c.textContent = myQuestions[questionIndex].answers.c;
-  elements.options.d.textContent = myQuestions[questionIndex].answers.d;
+  elements.options.a.textContent ="1. "+ myQuestions[questionIndex].answers.a;
+  elements.options.b.textContent ="2. "+ myQuestions[questionIndex].answers.b;
+  elements.options.c.textContent ="3. "+ myQuestions[questionIndex].answers.c;
+  elements.options.d.textContent ="4. "+ myQuestions[questionIndex].answers.d;
   prepareQuiz();
 }
+
 //function to display the message if the user selected answer is correct or wrong
 function displayMessage(result) {
   elements.message.textContent = result;
@@ -136,26 +145,45 @@ function displayMessage(result) {
   }
   resultsTimeout = setTimeout(hideMessage, 1000);
 }
+
 //function to hide the correct/incorrect message
 function hideMessage() {
   elements.message.classList.add("hide");  
 }
+
 //function to verify whether the user selected answer is correct
 function checkAnswer(event) {
   if (event.target.id == myQuestions[questionIndex].correctAnswer) {      
     myQuestions[questionIndex].correct = true;
     displayMessage("Correct!")  
-  } else displayMessage("wrong!"); 
+  } else{ 
+    displayMessage("wrong!");
+  timerCount = timerCount - WRONG_ANSWER_COUNT; }
   nextQuestion();
 }
+
+//function that allows to view highscore in the middle of the quiz
+function highScoreView(){
+  elements.page.Results.classList.add("hide");
+  elements.page.Question.classList.add("hide");
+  elements.page.Highscore.classList.remove("hide");
+  elements.BackButton.classList.remove("hide");
+  elements.ClearHighscore.classList.remove("hide");
+  elements.message.classList.add("hide");  
+
+  displayHighscore();
+}
+
 //function to display next question
 function nextQuestion() {
   questionIndex++;
   if(myQuestions[questionIndex]) displayQuestion();
   else displayResults(); 
 }
+
 //function to display the user score in %
 function displayResults() {
+  if(timer) clearInterval(timer);
   elements.page.Results.classList.remove("hide");
   elements.page.Question.classList.add("hide");
 
@@ -166,6 +194,7 @@ function displayResults() {
   elements.Finalscore.textContent = percentage+"%";
   
 }
+
 //function to submit the score and store the result in local storage
 function scoreSubmit(){
   highscores.push({
@@ -181,6 +210,7 @@ function scoreSubmit(){
   elements.UserInitials.value = "";
   displayHighscore();
 }
+
 //function to display the list of all the highscore stored in local storage
 function displayHighscore() {
   elements.HighscoreList.innerHTML = "";
@@ -199,22 +229,36 @@ function displayHighscore() {
   });
 
 }
+
 //function to clear list of high scores displayed on the page
 function highScoreClear(){
   highscores = [];
   localStorage.highscores = JSON.stringify(highscores);
   displayHighscore();
 }
+
 //function to return back to the quiz start page
 function backToHome(){
-  questionIndex = 0;
+  resetQuiz();
   elements.page.Highscore.classList.add("hide");
   elements.page.Welcome.classList.remove("hide"); 
 }
 
+//function to reset quiz back to start
+function resetQuiz() {
+  if(timer) clearInterval(timer);
+  myQuestions.forEach(function(question, index) {
+    myQuestions[index].correct = false;
+  });
+  questionIndex = 0;
+  timerCount = TIMER_START;
+}
+
+
+// button event listeners
 elements.start.addEventListener("click", initiateQuiz);
 elements.options.all.addEventListener("click", checkAnswer);
 elements.SubmitScore.addEventListener("click",scoreSubmit);
 elements.ClearHighscore.addEventListener("click",highScoreClear)
 elements.BackButton.addEventListener("click",backToHome);
-
+elements.ViewHighScore.addEventListener("click",highScoreView);
